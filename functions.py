@@ -1,3 +1,5 @@
+from math import sqrt
+
 ## VALIDAR SE OS NÚMEROS SÃO VÁLIDOS
 def valid_number1(num1):
     while True:
@@ -27,6 +29,18 @@ def list_operations(num1, num2):
         match operation:
             case 1:
                 return num1 * num2
+            case 2:
+                return num1 / num2
+            case 3:
+                return num1 - num2
+            case 4:
+                return num1 + num2
+            case 5:
+                return num1 ** 2
+            case 6:
+                return num1 ** num2
+            case 7:
+                return sqrt(num1)
             case _:
                 return "Unavailable operation/ERROR"
 
