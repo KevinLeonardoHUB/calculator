@@ -1,5 +1,9 @@
 from math import sqrt
 
+def clear_console():
+    import os
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 ## VALIDAR SE OS NÚMEROS SÃO VÁLIDOS
 def valid_number1(num1):
     while True:
