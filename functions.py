@@ -41,8 +41,7 @@ def app_mainframe():
 
     app = ctk.CTk()
     app.title("Calculadora MilGrau")
-    app.geometry("480x650")
+    app.geometry("480x670")
 
     rows(app)
-
     app.mainloop()
