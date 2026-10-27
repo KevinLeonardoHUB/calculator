@@ -1,5 +1,7 @@
 import customtkinter as ctk
 
+def numbers(caractere):
+    print(f"O caractere {caractere} foi clicado!")
 
 def rows(app):
     textos = ["7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "+", "0", ".", "=", "÷"]
@@ -10,7 +12,8 @@ def rows(app):
             text=texto,
             width=120,
             height=120,
-            corner_radius=1
+            corner_radius=1,
+            command=lambda caractere=texto: numbers(caractere)
         )
         botao.grid(
             row=indice // 4,
@@ -37,11 +40,16 @@ def rows(app):
 
 
 def app_mainframe():
+    # Appearance mode
     ctk.set_appearance_mode("dark")
 
+    #  Header and size
     app = ctk.CTk()
     app.title("Calculadora MilGrau")
     app.geometry("480x670")
-
+    
+    # Buttons function
     rows(app)
+    
+    
     app.mainloop()
