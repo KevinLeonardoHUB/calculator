@@ -1,11 +1,36 @@
 import customtkinter as ctk
 
-def numbers(caractere):
-    print(f"O caractere {caractere} foi clicado!")
+"""
+GUARDAR OS NUMEROS E SIMBOLOS
+VARIAVEL GLOBAL PARA SER UTILIZADA DEPOIS
+"""
+global numbers_saved, signals
+numbers_saved = []
+signals_saved = []
+
+## DIFERENCIAR SIMBOLOS DE NUMEROS
+def clicked(caractere):
+    if caractere == "=" or caractere == "-" or caractere == "x" or caractere == "÷" or caractere == "+":
+        signals_saved.append(caractere)
+        print(f"Sinais utilizados: {signals_saved}")
+    else:
+        if not caractere == ".":
+            float(caractere)
+            numbers_saved.append(caractere)
+            print(f"Números utilizados: {numbers_saved}")
+        else:
+            numbers_saved.append(caractere)
+            print(f"Números utilizados: {numbers_saved}")
 
 def rows(app):
+    ## BOTOES
     textos = ["7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "+", "0", ".", "=", "÷"]
 
+    """
+    PARA INDICE(QUE TB CONTEM UM TEXTO), 
+    USO ENUMERATE PARA CONTAR QUANTOS ELEMENTOS TENHO EM textos(numeros)
+    E CRIAR UM BOTAO PARA CADA, TODOS DO MESMO TAMANHO
+    """
     for indice, texto in enumerate(textos):
         botao = ctk.CTkButton(
             app,
@@ -13,8 +38,10 @@ def rows(app):
             width=120,
             height=120,
             corner_radius=1,
-            command=lambda caractere=texto: numbers(caractere)
+            # QUANDO É CLICADO, CHAMO A FUNCAO CLICKED
+            command=lambda caractere=texto: clicked(caractere)
         )
+        ## A CADA 4 TROCAMOS DE COLUNA
         botao.grid(
             row=indice // 4,
             column=indice % 4,
@@ -22,6 +49,7 @@ def rows(app):
             pady=(200, 0) if indice < 4 else 0
         )
 
+        ## OS SIMBOLOS TEM COR DIFERENTE DOS NUMEROS
         if texto == "x" or texto == "-" or texto == "+" or texto == "÷":
             botao.configure(
                 fg_color="#FF9500",
