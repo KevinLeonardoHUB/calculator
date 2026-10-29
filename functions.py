@@ -1,12 +1,14 @@
 import customtkinter as ctk
-
+import operator
 """
 GUARDAR OS NUMEROS E SIMBOLOS
 VARIAVEL GLOBAL PARA SER UTILIZADA DEPOIS
 """
-global numbers_saved, signals
+global numbers_saved, signals, num
 numbers_saved = []
 signals_saved = []
+num = 0
+
 
 ## DIFERENCIAR SIMBOLOS DE NUMEROS
 def clicked(caractere):
@@ -14,17 +16,42 @@ def clicked(caractere):
         signals_saved.append(caractere)
         print(f"Sinais utilizados: {signals_saved}")
     else:
-        if not caractere == ".":
-            float(caractere)
-            numbers_saved.append(caractere)
-            print(f"Números utilizados: {numbers_saved}")
-        else:
-            numbers_saved.append(caractere)
-            print(f"Números utilizados: {numbers_saved}")
+        numbers_saved.append(caractere)
+        print(f"Números utilizados: {numbers_saved}")
+        
+    # Função para juntar os números e transformar em float
+    join_numbers()
+
+## JUNTAR OS TEXTOS E TRANSFORMAR EM FLOAT
+def join_numbers():
+    ## VALIDAR SE TEM 1 OU 2 PONTOS
+    if numbers_saved.count(".") > 1:
+        numbers_saved.pop()
+        print("O número só pode ter um ponto decimal.")
+        return
+
+    numeros_completos = "".join(numbers_saved)
+    ## VALIDAR SE O NUMERO COMEÇA VAZIO 
+    if numeros_completos == "" or numeros_completos == ".":
+        return
+
+    num = float(numeros_completos)
+    print(f"O numero completo é: {num}")
+    
+def operators():
+    ops = 
+    {
+        "+": operator.add,
+        "-": operator.sub,
+        "x": operator.mul,
+        "÷": operator.truediv
+    }
+    
+
 
 def rows(app):
     ## BOTOES
-    textos = ["7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "+", "0", ".", "=", "÷"]
+    textos = ["7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "÷", "0", ".", "=", "+"]
 
     """
     PARA INDICE(QUE TB CONTEM UM TEXTO), 
