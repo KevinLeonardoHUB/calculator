@@ -5,11 +5,32 @@ import operator
 GUARDAR OS NUMEROS E SIMBOLOS
 VARIAVEL GLOBAL PARA SER UTILIZADA DEPOIS
 """
-global numbers_saved, lista_operations_saved, num_1
+global numbers_saved, lista_operations_saved, num_1, tela
 
 numbers_saved = []
 lista_operations_saved = []
 num_1 = 0
+tela = None
+
+
+def atualizar_tela(valor=None):
+    global tela
+
+    if tela is None:
+        return
+
+    if valor is not None:
+        tela.configure(text=str(valor))
+        return
+
+    if numbers_saved:
+        texto = "".join(numbers_saved)
+    elif lista_operations_saved:
+        texto = " ".join(str(item) for item in lista_operations_saved)
+    else:
+        texto = "0"
+
+    tela.configure(text=texto)
 
 
 ## DIFERENCIAR SIMBOLOS DE NUMEROS
@@ -20,6 +41,7 @@ def clicked(caractere):
         numbers_saved.append(caractere)
         print(f"Números utilizados: {numbers_saved}")
         join_numbers()
+        atualizar_tela()
         return
 
     if not numbers_saved:
@@ -30,6 +52,7 @@ def clicked(caractere):
         lista_operations_saved.append(num_1)
         resultado = calculate()
         print(f"Resultado: {resultado}")
+        atualizar_tela(resultado)
         lista_operations_saved.clear()
         numbers_saved.clear()
         num_1 = 0
@@ -38,6 +61,7 @@ def clicked(caractere):
         lista_operations_saved.append(caractere)
         numbers_saved.clear()
         num_1 = 0
+        atualizar_tela()
 
     print(lista_operations_saved)
 
@@ -86,16 +110,19 @@ def operators():
     }
 
 
-def rows(app):
+def main_calc(app):
     ## BOTOES
-    textos = ["7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "÷", "0", ".", "=", "+"]
-
+    global lista_operations_saved, tela
+    textos_botoes = ["7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "÷", "0", ".", "=", "+"]
+    app.grid_rowconfigure(0, weight=1)
+    tela = ctk.CTkLabel(app, text="0", font=("Arial", 30))
+    tela.grid(row=0, column=0, columnspan=4, padx=10, pady=(10, 0), sticky="nsew")
     """
     PARA INDICE(QUE TB CONTEM UM TEXTO), 
-    USO ENUMERATE PARA CONTAR QUANTOS ELEMENTOS TENHO EM textos(numeros)
+    USO ENUMERATE PARA CONTAR QUANTOS ELEMENTOS TENHO EM textos_botoes(numeros)
     E CRIAR UM BOTAO PARA CADA, TODOS DO MESMO TAMANHO
     """
-    for indice, texto in enumerate(textos):
+    for indice, texto in enumerate(textos_botoes):
         botao = ctk.CTkButton(
             app,
             text=texto,
@@ -105,12 +132,11 @@ def rows(app):
             # QUANDO É CLICADO, CHAMO A FUNCAO CLICKED
             command=lambda caractere=texto: clicked(caractere)
         )
-        ## A CADA 4 TROCAMOS DE COLUNA
+        ## A CADA 4 TROCAMOS qDE COLUNA
         botao.grid(
-            row=indice // 4,
+            row=(indice // 4) + 1,
             column=indice % 4,
-            padx=0,
-            pady=(200, 0) if indice < 4 else 0
+            padx=0
         )
 
         ## OS SIMBOLOS TEM COR DIFERENTE DOS NUMEROS
@@ -131,17 +157,3 @@ def rows(app):
             )
 
 
-def app_mainframe():
-    # Appearance mode
-    ctk.set_appearance_mode("dark")
-
-    #  Header and size
-    app = ctk.CTk()
-    app.title("Calculadora MilGrau")
-    app.geometry("480x670")
-    
-    # Buttons function
-    rows(app)
-    
-    
-    app.mainloop()

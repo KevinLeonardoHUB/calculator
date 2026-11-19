@@ -1,4 +1,4 @@
-from functions import app_mainframe
+from view import *
 import customtkinter as ctk
 
 
